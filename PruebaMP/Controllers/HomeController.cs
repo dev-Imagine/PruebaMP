@@ -75,6 +75,7 @@ namespace PruebaMP.Controllers
 
             Shipment shipment = new Shipment()
             {
+                Cost = 520,
                 ReceiverAddress = new ReceiverAddress()
                 {
                     ZipCode = "5900",
@@ -92,7 +93,7 @@ namespace PruebaMP.Controllers
             
             
             preference.Shipment = shipment;
-
+            
             BackUrls backUrls = new BackUrls();
             backUrls.Failure = "";
             backUrls.Success = "";
