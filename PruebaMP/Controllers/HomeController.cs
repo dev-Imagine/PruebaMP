@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using MercadoPago;
-using MercadoPago.Resources;
-using MercadoPago.DataStructures.Preference;
+using System.Web.Script.Serialization;
+using mercadopago;
+using Newtonsoft.Json;
 
 namespace PruebaMP.Controllers
 {
@@ -14,15 +15,23 @@ namespace PruebaMP.Controllers
         public ActionResult Index()
         {
             // https://api.mercadolibre.com/sites/MLA/shipping_options?zip_code_from=5900&zip_code_to=2550&dimensions=10x10x20,500
-            MercadoPago.SDK.ClientId = "8668524491166741";
-            MercadoPago.SDK.ClientSecret = "4PaR49TQj2gBLMygCWZ5hhK3ITcUGASb";
+            //MercadoPago.SDK.ClientId = "8668524491166741";
+            //MercadoPago.SDK.ClientSecret = "4PaR49TQj2gBLMygCWZ5hhK3ITcUGASb";
+
+
+            /*mercadopago.SDK.ClientId = "3825884689807039";
+            mercadopago.SDK.ClientSecret = "2aLAWWtUxSs4ZbXjSXQRVilQCG1RdSlz";
+
+            
+            //MercadoPago.SDK.AccessToken = "TEST-3825884689807039-100215-16400b9b5d9943961c4c3c1242690a8f-357350759";
             Preference preference = new Preference();
+            
             preference.Items.Add(
               new Item()
               {
                   Id = "1234",
                   Title = "Mediocre Paper Knife",
-                  Quantity = 3,
+                  Quantity = 1,
                   CurrencyId = MercadoPago.Common.CurrencyId.ARS,
                   UnitPrice = (float)4
               }
@@ -96,14 +105,41 @@ namespace PruebaMP.Controllers
             
             BackUrls backUrls = new BackUrls();
             backUrls.Failure = "";
-            backUrls.Success = "";
-            backUrls.Pending = "";
+            backUrls.Success = "http://localhost:64615/Home/PagoFinalizado";
+            backUrls.Pending = "http://localhost:64615/Home/PagoEnProceso";
 
 
             // Save and posting preference
-            preference.Save();
+            preference.Save();*/
 
-            ViewBag.btnPagar = preference.InitPoint;
+            MP mp = new MP("3825884689807039", "2aLAWWtUxSs4ZbXjSXQRVilQCG1RdSlz");
+
+            String preferenceData = "{\"items\":" +
+                "[{" +
+                    "\"title\":\"Multicolor kite\"," +
+                    "\"quantity\":1," +
+                    "\"currency_id\":\"ARS\"," +
+                    "\"unit_price\":2" +
+                    "}]," +
+                    "\"shipments\":{" +
+                        "\"mode\":\"me2\"," +
+                       // "\"cost\":," +
+                        "\"dimensions\":\"30x30x30,500\"," +
+                        "\"local_pickup\":true," +
+                        "\"free_methods\":[" +
+                            "{\"id\":73328}" +
+                        "]," +
+                        "\"default_shipping_method\":73328," +
+                        "\"zip_code\":\"5700\"" +
+                    "}" +
+                "}";
+
+            Hashtable preference = mp.createPreference(preferenceData);
+
+            string st = ((Hashtable)preference["response"])["init_point"].ToString();
+            
+
+            ViewBag.btnPagar = st;
 
 
             return View();
