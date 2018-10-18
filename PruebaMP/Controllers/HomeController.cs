@@ -113,34 +113,63 @@ namespace PruebaMP.Controllers
             preference.Save();*/
 
             MP mp = new MP("3825884689807039", "2aLAWWtUxSs4ZbXjSXQRVilQCG1RdSlz");
-
-            String preferenceData = "{\"items\":" +
-                "[{" +
+            
+            String preferenceData = 
+                "{\"items\":" +
+                    "[{" +
                     "\"title\":\"Multicolor kite\"," +
                     "\"quantity\":1," +
                     "\"currency_id\":\"ARS\"," +
-                    "\"unit_price\":2" +
-                    "}]," +
-                    "\"shipments\":{" +
-                        "\"mode\":\"me2\"," +
-                       // "\"cost\":," +
-                        "\"dimensions\":\"30x30x30,500\"," +
-                        "\"local_pickup\":true," +
-                        "\"free_methods\":[" +
-                            "{\"id\":73328}" +
-                        "]," +
-                        "\"default_shipping_method\":73328," +
-                        "\"zip_code\":\"5700\"" +
-                    "}" +
+                    "\"unit_price\":11" +
+                    "}"+
+                    "]," +
+                "\"shipments\":{" +
+                    "\"mode\":\"me2\"," +
+                    "\"dimensions\":\"30x30x30,500\"," +
+                    "\"local_pickup\":true," +
+                    "\"free_methods\":[" +
+                        "{\"id\":73328}" +
+                    "]," +
+                "\"default_shipping_method\":73328," +
+                "\"zip_code\":\"5700\"" +
+                "}," +
+                "\"back_urls\":{" +
+                        "\"success\": \"https://www.dev-imagine.com\"" +
+                "}," +
+                "\"auto_return\":\"approved\"," +
+
+
                 "}";
 
             Hashtable preference = mp.createPreference(preferenceData);
 
-            string st = ((Hashtable)preference["response"])["init_point"].ToString();
-            
+            // link de pago
+            ViewBag.btnPagar = ((Hashtable)preference["response"])["init_point"].ToString();
+            // collection id
+            // ViewBag.Collection_id = ((Hashtable)preference["response"])["collection_id"].ToString();
 
-            ViewBag.btnPagar = st;
+            //                                          collection_id
+            // https://api.mercadopago.com/v1/payments/4205733345?access_token=APP_USR-3825884689807039-100215-028a54b7ff4b3017ab7830f35784a693-357350759
+            //con envio
+            // https://www.dev-imagine.com/?collection_id=4205580523&collection_status=approved&preference_id=357350759-b26bbfb3-7857-496c-a2f9-814a2e4aa084&external_reference=null&payment_type=account_money&merchant_order_id=857112399
+            //con envio gratis
+            // https://www.dev-imagine.com/?collection_id=4207772795&collection_status=approved&preference_id=357350759-8aa31d01-1c36-481f-9ae2-f521327671f1&external_reference=null&payment_type=account_money&merchant_order_id=858026235
 
+
+            // costso de envio
+            // https://api.mercadolibre.com/sites/MLA/shipping_options?zip_code_from=5000&zip_code_to=5152&dimensions=10x10x20,500
+
+            // Al recibir la notificacion
+            // Obtener topic=payment&id=123456789
+            // filtrar por topic=payment
+            // Obtener informacion de pago con el id  collection_id
+            // https://api.mercadopago.com/v1/payments/4205580523?access_token=APP_USR-3825884689807039-100215-028a54b7ff4b3017ab7830f35784a693-357350759
+            // del resultado de lo anterior
+            //                                             order.id
+            // https://api.mercadopago.com/merchant_orders/857112399?access_token=APP_USR-3825884689807039-100215-028a54b7ff4b3017ab7830f35784a693-357350759
+            // y obtenemos todos los datos
+            // Obtener etiqueta de envio
+            // https://api.mercadolibre.com/shipment_labels?shipment_ids=27709894001&response_type=zpl2&access_token=APP_USR-3825884689807039-100215-028a54b7ff4b3017ab7830f35784a693-357350759
 
             return View();
 
@@ -158,7 +187,6 @@ namespace PruebaMP.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
-
             return View();
         }
     }

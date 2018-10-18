@@ -14,5 +14,19 @@
 <div class="row ">
 
     <a mp-mode="dftl" href="@ViewBag.btnPagar" name="MP-payButton" class='blue-ar-l-rn-none'>Pagar</a>
-
+    <script type="text/javascript">
+        function pagar() {
+            var url = "@Url.Action("CrearVenta", "Home")";
+        
+            var data = { idCollection: idCollection };
+            $.post(url, data).done(function (data) {
+                if (data) {
+                 location.href = @ViewBag.btnPagar;
+                }
+                else {
+                    alert("error");
+                }
+            });
+        }
+    </script>
 </div>
