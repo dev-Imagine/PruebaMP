@@ -27,5 +27,6 @@ namespace PruebaMP.Models
     
         public virtual DbSet<DetalleVenta> DetalleVenta { get; set; }
         public virtual DbSet<Venta> Venta { get; set; }
+        public virtual DbSet<test> test { get; set; }
     }
 }
