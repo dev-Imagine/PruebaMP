@@ -57,6 +57,7 @@ namespace PruebaMP.Controllers
                         "\"success\": \"https://www.dev-imagine.com\"" +
                 "}," +
                 "\"auto_return\":\"approved\"," +
+               
 
 
                 "}";
@@ -108,21 +109,21 @@ namespace PruebaMP.Controllers
         {
             return View();
         }
-        [HttpGet]
+        [HttpPost]
         public ActionResult NotificacionPago(string topic, string id)
         {
+            srvTest sTest = new srvTest();
+            
             // URL Notificacion
             // http://localhost:64615/Home/NotificacionPago/?topic=payment&id=4205580523
 
-            srvTest sTest = new srvTest();
+            
 
             test oTest = new test();
             oTest.result = "topic:" + topic + " - id:" + id;
             sTest.AddTest(oTest);
             try
             {
-
-                //id = "4205580523";
                 if (topic == "payment")
                 {
                     MP mp = new MP("3825884689807039", "2aLAWWtUxSs4ZbXjSXQRVilQCG1RdSlz");
@@ -170,12 +171,15 @@ namespace PruebaMP.Controllers
 
                     //}
                 }
-                return new HttpStatusCodeResult(HttpStatusCode.OK);
+                // return new HttpStatusCodeResult(HttpStatusCode.OK);
+                return View();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+                // return new HttpStatusCodeResult(HttpStatusCode.OK);
+                return View();
             }
         }
+       
     }
 }
